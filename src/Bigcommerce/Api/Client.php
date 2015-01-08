@@ -10,6 +10,7 @@ use \Exception as Exception;
 class Client
 {
 	static private $store_url;
+	static private $store_hash;
 	static private $username;
 	static private $api_key;
 	static private $connection;
@@ -118,9 +119,14 @@ class Client
 	/**
 	 * Return XML strings from the API instead of building objects.
 	 */
-	public static function useXml()
+	/*public static function useXml()
 	{
 		self::connection()->useXml();
+	}*/
+	/* MODIFIED */
+	public static function useXml($option=true)
+	{
+		self::connection()->useXml = false;
 	}
 
 	/**
@@ -172,8 +178,8 @@ class Client
 		if (!self::$connection) {
 		 	self::$connection = new Connection();
 		 	if (self::$client_id) {
-		 		self::$connection->setHeader('X-Auth-Client', self::$client_id);
-		 		self::$connection->setHeader('X-Auth-Token', self::$auth_token);
+		 		self::$connection->addHeader('X-Auth-Client', self::$client_id);
+		 		self::$connection->addHeader('X-Auth-Token', self::$auth_token);
 		 	} else {
 		 		self::$connection->authenticate(self::$username, self::$api_key);
 		 	}
